@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/common-config/common-config.iml" filepath="$PROJECT_DIR$/common-config/common-config.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gateway-service/gateway-service.iml" filepath="$PROJECT_DIR$/gateway-service/gateway-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/invitation-service/invitation-service.iml" filepath="$PROJECT_DIR$/invitation-service/invitation-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/notes-service/notes-service.iml" filepath="$PROJECT_DIR$/notes-service/notes-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service-discovery-server/service-discovery-server.iml" filepath="$PROJECT_DIR$/service-discovery-server/service-discovery-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/user-service/user-service.iml" filepath="$PROJECT_DIR$/user-service/user-service.iml" />
+    </modules>
+  </component>
+</project>
