@@ -28,9 +28,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String register(RegisterDto dto) {
-        if (!dto.getPassword().equals(dto.getConfirmPassword())) {
-            throw new ValidationException(String.format("Parameters password = [%s] and confirmPassword = [%s] is not the same", dto.getPassword(), dto.getConfirmPassword()));
-        }
         User user = userServiceMapper.toEntity(dto);
         user.setSalt(generateSalt());
         user.setHash(passwordEncoder.encode(dto.getPassword() + user.getSalt()));
