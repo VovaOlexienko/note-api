@@ -1,46 +1,31 @@
 package com.github.notes.api.invitation.service.entity;
 
 import com.github.notes.api.common.config.constant.InvitationStatus;
-import lombok.*;
-import org.hibernate.annotations.Type;
+import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.util.UUID;
-
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-@Table(name = "invitation")
+@Data
+@Document("invitation")
 public class Invitation {
 
     @Id
-    @GeneratedValue
-    @Type(type = "uuid-char")
-    @Column(name = "id", nullable = false)
-    private UUID id;
+    @Field(name = "id")
+    private String id;
 
-    @Column(name = "owner_user_id", nullable = false)
-    private Long ownerUserId;
+    @Field(name = "owner_user_id")
+    private String ownerUserId;
 
-    @Column(name = "note_package_id", nullable = false)
-    private UUID notePackageId;
+    @Field(name = "note_package_id")
+    private String notePackageId;
 
-    @Column(name = "note_package_name", nullable = false)
+    @Field(name = "note_package_name")
     private String notePackageName;
 
-    @Column(name = "guest_user_id", nullable = false)
-    private Long guestUserId;
+    @Field(name = "guest_user_id")
+    private String guestUserId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+    @Field(name = "status")
     private InvitationStatus status;
 }

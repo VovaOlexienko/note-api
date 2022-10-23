@@ -1,37 +1,26 @@
 package com.github.notes.api.user.service.entity;
 
-import lombok.*;
+import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-@Table(name = "user")
+@Data
+@Document("user")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
+    private String id;
 
-    @Column(name = "username", unique = true, length = 32, nullable = false)
+    @Field(value = "username")
     private String username;
 
-    @Column(name = "email", unique = true, nullable = false)
+    @Field(value = "email")
     private String email;
 
-    @Column(name = "hash", nullable = false)
+    @Field(value = "hash")
     private String hash;
 
-    @Column(name = "salt", nullable = false)
+    @Field(value = "salt")
     private String salt;
 }

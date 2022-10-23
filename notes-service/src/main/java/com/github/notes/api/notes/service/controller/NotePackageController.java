@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,31 +21,31 @@ public class NotePackageController {
 
     @GetMapping(path = "/package")
     @Operation(description = "Отримати всі пакети заміток користувача")
-    public List<NotePackageDto> getNotePackages(@RequestHeader("userId") Long userId) {
+    public List<NotePackageDto> getNotePackages(@RequestHeader("userId") String userId) {
         return notesService.getNotePackages(userId);
     }
 
     @GetMapping(path = "/package/{notePackageId}")
     @Operation(description = "Отримати пакет заміток")
-    public NotePackageDto getNotePackage(@PathVariable(name = "notePackageId") UUID notePackageId, @RequestHeader("userId") Long userId) {
+    public NotePackageDto getNotePackage(@PathVariable(name = "notePackageId") String notePackageId, @RequestHeader("userId") String userId) {
         return notesService.getNotePackage(notePackageId, userId);
     }
 
     @PostMapping(path = "/package")
     @Operation(description = "Створити пакет заміток")
-    public NotePackageDto createNotePackage(@Valid @RequestBody CreateNotePackageDto dto, @RequestHeader("userId") Long userId) {
+    public NotePackageDto createNotePackage(@Valid @RequestBody CreateNotePackageDto dto, @RequestHeader("userId") String userId) {
         return notesService.createNotePackage(dto, userId);
     }
 
     @PutMapping(path = "/package")
     @Operation(description = "Редагувати пакет заміток")
-    public void updateNotePackage(@Valid @RequestBody UpdateNotePackageDto dto, @RequestHeader("userId") Long userId) {
+    public void updateNotePackage(@Valid @RequestBody UpdateNotePackageDto dto, @RequestHeader("userId") String userId) {
         notesService.updateNotePackage(dto, userId);
     }
 
     @DeleteMapping(path = "/package/{notePackageId}")
     @Operation(description = "Видалити пакет заміток")
-    public void deleteNotePackage(@PathVariable(name = "notePackageId") UUID notePackageId, @RequestHeader("userId") Long userId) {
+    public void deleteNotePackage(@PathVariable(name = "notePackageId") String notePackageId, @RequestHeader("userId") String userId) {
         notesService.deleteNotePackage(notePackageId, userId);
     }
 }

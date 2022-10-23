@@ -11,7 +11,6 @@ public class ApiConstants {
     public static final String EMAIL = "email";
     public static final String PASSWORD = "password";
     public static final String NOTES = "notes";
-    public static final String NOTIFICATION_TIME = "notificationTime";
     public static final String ORDER = "order";
     public static final String NOTE_PACKAGE_ID = "notePackageId";
     public static final String GUEST_USER_EMAIL = "guestUserEmail";

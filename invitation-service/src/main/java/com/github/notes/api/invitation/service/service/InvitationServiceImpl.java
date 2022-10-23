@@ -15,8 +15,6 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.ValidationException;
 import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static com.github.notes.api.common.config.constant.InvitationStatus.ACCEPTED;
 import static com.github.notes.api.common.config.constant.InvitationStatus.ACTIVE;
@@ -31,14 +29,14 @@ public class InvitationServiceImpl implements InvitationService {
     private final InvitationServiceMapper invitationServiceMapper;
 
     @Override
-    public List<InvitationDto> getInvitations(Long userId) {
-        return invitationRepository.findByGuestUserId(userId)
-                .stream().map(invitationServiceMapper::toDto)
-                .collect(Collectors.toList());
+    public List<InvitationDto> getInvitations(String userId) {
+        return invitationRepository.findByGuestUserId(userId).stream()
+                .map(invitationServiceMapper::toDto)
+                .toList();
     }
 
     @Override
-    public void createInvitation(CreateInvitationDto dto, Long userId) {
+    public void createInvitation(CreateInvitationDto dto, String userId) {
         UserDto user = userServiceManager.getUser(dto.getGuestUserEmail());
         if (user.getId().equals(userId)) {
             throw new ValidationException("Can't create invitation for user with same id");
@@ -53,7 +51,7 @@ public class InvitationServiceImpl implements InvitationService {
     }
 
     @Override
-    public void updateInvitation(UpdateInvitationDto dto, Long userId) {
+    public void updateInvitation(UpdateInvitationDto dto, String userId) {
         Invitation invitation = getInvitationOrThrowException(dto.getId(), userId);
         validateInvitationStatus(dto, invitation);
         if (ACCEPTED == dto.getStatus()) {
@@ -63,7 +61,7 @@ public class InvitationServiceImpl implements InvitationService {
         invitationRepository.save(invitation);
     }
 
-    private Invitation getInvitationOrThrowException(UUID invitationId, Long userId) {
+    private Invitation getInvitationOrThrowException(String invitationId, String userId) {
         return invitationRepository.findByIdAndGuestUserId(invitationId, userId)
                 .orElseThrow(() -> new ValidationException(String.format("Invitation with id = [%s] is not found", invitationId)));
     }

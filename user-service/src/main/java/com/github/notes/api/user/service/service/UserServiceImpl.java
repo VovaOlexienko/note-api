@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
         User user = userServiceMapper.toEntity(dto);
         user.setSalt(generateSalt());
         user.setHash(passwordEncoder.encode(dto.getPassword() + user.getSalt()));
-        return authorizationUtil.generateJwtToken(userRepository.save(user).getId().toString());
+        return authorizationUtil.generateJwtToken(userRepository.save(user).getId());
     }
 
     @Override
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
         if (!passwordEncoder.matches(dto.getPassword() + user.getSalt(), user.getHash())) {
             throw new ValidationException("Authentication failed");
         }
-        return authorizationUtil.generateJwtToken(user.getId().toString());
+        return authorizationUtil.generateJwtToken(user.getId());
     }
 
     @Override

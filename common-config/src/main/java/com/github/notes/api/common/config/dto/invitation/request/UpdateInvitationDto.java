@@ -3,10 +3,9 @@ package com.github.notes.api.common.config.dto.invitation.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.notes.api.common.config.constant.InvitationStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.Data;
 
 import javax.validation.constraints.NotNull;
-import java.util.UUID;
 
 import static com.github.notes.api.common.config.constant.ApiConstants.ID;
 import static com.github.notes.api.common.config.constant.ApiConstants.STATUS;
@@ -21,7 +20,7 @@ public class UpdateInvitationDto {
     @NotNull
     @JsonProperty(ID)
     @Schema(required = true, title = INVITATION_ID_TITLE, example = INVITATION_ID_EXAMPLE)
-    private UUID id;
+    private String id;
 
     @NotNull
     @JsonProperty(STATUS)

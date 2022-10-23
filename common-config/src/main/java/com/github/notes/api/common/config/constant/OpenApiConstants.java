@@ -29,17 +29,11 @@ public class OpenApiConstants {
     public static final String NOTE_PACKAGE_NAME_TITLE = "Назва пакету заміток";
     public static final String NOTE_PACKAGE_NAME_EXAMPLE = "Навчання";
 
-    public static final String NOTE_ID_TITLE = "Ідентифікатор замітки";
-    public static final String NOTE_ID_EXAMPLE = "fe7f21af-9373-4c02-88e2-6d10f6339c76";
-
     public static final String NOTE_NAME_TITLE = "Назва замітки";
     public static final String NOTE_NAME_EXAMPLE = "Лекція з ООП на 10:30";
 
     public static final String NOTE_STATUS_TITLE = "Статус замітки";
     public static final String NOTE_STATUS_EXAMPLE = "ACTIVE";
-
-    public static final String NOTE_NOTIFICATION_TIME_TITLE = "Час для відправлення нагадування";
-    public static final String NOTE_NOTIFICATION_TIME_EXAMPLE = "2018-07-14T17:45:55.9483536";
 
     public static final String NOTE_ORDER_TITLE = "Порядковий номер замітки в списку";
     public static final String NOTE_ORDER_EXAMPLE = "0";

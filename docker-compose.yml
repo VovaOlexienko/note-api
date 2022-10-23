@@ -7,7 +7,7 @@ services:
         -Deureka.instance.hostname=service-discovery-server-12
         -Deureka.client.service-url.defaultZone=http://service-discovery-server-1:8080/eureka,http://service-discovery-server-2:8080/eureka,http://service-discovery-server-3:8080/eureka
     ports:
-      - "9001:8080"
+      - "127.0.0.1:9001:8080"
     networks:
       - app-net
     mem_limit: 512m
@@ -18,7 +18,7 @@ services:
         -Deureka.instance.hostname=service-discovery-server-2
         -Deureka.client.service-url.defaultZone=http://service-discovery-server-1:8080/eureka,http://service-discovery-server-2:8080/eureka,http://service-discovery-server-3:8080/eureka
     ports:
-      - "9002:8080"
+      - "127.0.0.1:9002:8080"
     networks:
       - app-net
     mem_limit: 512m
@@ -29,7 +29,7 @@ services:
         -Deureka.instance.hostname=service-discovery-server-3
         -Deureka.client.service-url.defaultZone=http://service-discovery-server-1:8080/eureka,http://service-discovery-server-2:8080/eureka,http://service-discovery-server-3:8080/eureka
     ports:
-      - "9003:8080"
+      - "127.0.0.1:9003:8080"
     networks:
       - app-net
     mem_limit: 512m
@@ -52,18 +52,15 @@ services:
     image: olexienkovova/user-service:1.0
     environment:
       - JAVA_OPTS=
+        -Dspring.data.mongodb.uri=mongodb+srv://root:Zhtkgs5HIpPsaEuX@note.hvyhamq.mongodb.net/note?retryWrites=true&w=majority
         -Deureka.client.service-url.defaultZone=http://service-discovery-server-1:8080/eureka,http://service-discovery-server-2:8080/eureka,http://service-discovery-server-3:8080/eureka
-        -Dspring.datasource.url=jdbc:mysql://user-service-db:3306/user?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&useTimezone=true&serverTimezone=UTC
         -Dauthorization.cookie.validity=2505600
-        -Dspring.datasource.password=GdU_oPhgl4G6d
-        -Dspring.datasource.username=root
         -Djwt.secret.key=secret
         -Djwt.token.validity=2592000000
     depends_on:
       - service-discovery-server-1
       - service-discovery-server-2
       - service-discovery-server-3
-      - user-service-db
     deploy:
       mode: replicated
       replicas: 2
@@ -76,15 +73,12 @@ services:
     image: olexienkovova/notes-service:1.0
     environment:
       - JAVA_OPTS=
+        -Dspring.data.mongodb.uri=mongodb+srv://root:Zhtkgs5HIpPsaEuX@note.hvyhamq.mongodb.net/note?retryWrites=true&w=majority
         -Deureka.client.service-url.defaultZone=http://service-discovery-server-1:8080/eureka,http://service-discovery-server-2:8080/eureka,http://service-discovery-server-3:8080/eureka
-        -Dspring.datasource.url=jdbc:mysql://notes-service-db:3306/notes?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&useTimezone=true&serverTimezone=UTC
-        -Dspring.datasource.password=GdU_oPhgl4G6d
-        -Dspring.datasource.username=root
     depends_on:
       - service-discovery-server-1
       - service-discovery-server-2
       - service-discovery-server-3
-      - notes-service-db
     deploy:
       mode: replicated
       replicas: 2
@@ -97,47 +91,17 @@ services:
     image: olexienkovova/invitation-service:1.0
     environment:
       - JAVA_OPTS=
+        -Dspring.data.mongodb.uri=mongodb+srv://root:Zhtkgs5HIpPsaEuX@note.hvyhamq.mongodb.net/note?retryWrites=true&w=majority
         -Deureka.client.service-url.defaultZone=http://service-discovery-server-1:8080/eureka,http://service-discovery-server-2:8080/eureka,http://service-discovery-server-3:8080/eureka
-        -Dspring.datasource.url=jdbc:mysql://invitation-service-db:3306/invitation?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&useTimezone=true&serverTimezone=UTC
-        -Dspring.datasource.password=GdU_oPhgl4G6d
-        -Dspring.datasource.username=root
     depends_on:
       - service-discovery-server-1
       - service-discovery-server-2
       - service-discovery-server-3
-      - invitation-service-db
     deploy:
       mode: replicated
       replicas: 2
     expose:
       - "8080"
-    networks:
-      - app-net
-    mem_limit: 512m
-  user-service-db:
-    image: mysql:latest
-    environment:
-      - MYSQL_ROOT_PASSWORD=GdU_oPhgl4G6d
-    expose:
-      - "3306"
-    networks:
-      - app-net
-    mem_limit: 512m
-  notes-service-db:
-    image: mysql:latest
-    environment:
-      - MYSQL_ROOT_PASSWORD=GdU_oPhgl4G6d
-    expose:
-      - "3306"
-    networks:
-      - app-net
-    mem_limit: 512m
-  invitation-service-db:
-    image: mysql:latest
-    environment:
-      - MYSQL_ROOT_PASSWORD=GdU_oPhgl4G6d
-    expose:
-      - "3306"
     networks:
       - app-net
     mem_limit: 512m

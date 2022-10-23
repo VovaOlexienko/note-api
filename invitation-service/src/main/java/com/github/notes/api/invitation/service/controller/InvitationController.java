@@ -21,19 +21,19 @@ public class InvitationController {
 
     @GetMapping(path = "/invitation")
     @Operation(description = "Створити запрошення")
-    public List<InvitationDto> createInvitation(@RequestHeader("userId") Long userId) {
+    public List<InvitationDto> createInvitation(@RequestHeader("userId") String userId) {
         return invitationService.getInvitations(userId);
     }
 
     @PostMapping(path = "/invitation")
     @Operation(description = "Створити запрошення")
-    public void createInvitation(@Valid @RequestBody CreateInvitationDto dto, @RequestHeader("userId") Long userId) {
+    public void createInvitation(@Valid @RequestBody CreateInvitationDto dto, @RequestHeader("userId") String userId) {
         invitationService.createInvitation(dto, userId);
     }
 
     @PutMapping(path = "/invitation")
     @Operation(description = "Прийняти або відхилити запрошення")
-    public void updateInvitation(@Valid @RequestBody UpdateInvitationDto dto, @RequestHeader("userId") Long userId) {
+    public void updateInvitation(@Valid @RequestBody UpdateInvitationDto dto, @RequestHeader("userId") String userId) {
         invitationService.updateInvitation(dto, userId);
     }
 }

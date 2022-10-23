@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface InvitationService {
 
-    List<InvitationDto> getInvitations(Long userId);
+    List<InvitationDto> getInvitations(String userId);
 
-    void createInvitation(CreateInvitationDto dto, Long userId);
+    void createInvitation(CreateInvitationDto dto, String userId);
 
-    void updateInvitation(UpdateInvitationDto dto, Long userId);
+    void updateInvitation(UpdateInvitationDto dto, String userId);
 }

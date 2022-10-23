@@ -1,17 +1,16 @@
 package com.github.notes.api.notes.service.repository;
 
 import com.github.notes.api.notes.service.entity.NotePackage;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
-public interface NotePackageRepository extends JpaRepository<NotePackage, UUID> {
+public interface NotePackageRepository extends MongoRepository<NotePackage, String> {
 
-    List<NotePackage> findByUsersUserId(Long userId);
+    List<NotePackage> findByOwnersContains(String userId);
 
-    Optional<NotePackage> findByIdAndUsersUserId(UUID id, Long userId);
+    Optional<NotePackage> findByIdAndOwnersContains(String id, String ownerId);
 }

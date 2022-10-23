@@ -1,11 +1,11 @@
 package com.github.notes.api.common.config.dto.notes.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.notes.api.common.config.dto.notes.NoteDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.util.List;
-import java.util.UUID;
 
 import static com.github.notes.api.common.config.constant.ApiConstants.ID;
 import static com.github.notes.api.common.config.constant.ApiConstants.NAME;
@@ -20,7 +20,7 @@ public class NotePackageDto {
 
     @JsonProperty(ID)
     @Schema(required = true, title = NOTE_PACKAGE_ID_TITLE, example = NOTE_PACKAGE_ID_EXAMPLE)
-    private UUID id;
+    private String id;
 
     @JsonProperty(NAME)
     @Schema(required = true, title = NOTE_PACKAGE_NAME_TITLE, example = NOTE_PACKAGE_NAME_EXAMPLE)

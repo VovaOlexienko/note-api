@@ -44,7 +44,8 @@ public class JwtAuthenticationFilter implements GatewayFilter {
     }
 
     private boolean isSecuredEndpoint(ServerHttpRequest request) {
-        return AUTH_API_ENDPOINTS.stream().noneMatch(uri -> request.getURI().getPath().contains(uri));
+        return AUTH_API_ENDPOINTS.stream().noneMatch(uri -> request.getURI().getPath().contains(uri))
+                && !request.getURI().getPath().contains("swagger");
     }
 
     private String getJwtTokenFromCookies(ServerHttpRequest request) {

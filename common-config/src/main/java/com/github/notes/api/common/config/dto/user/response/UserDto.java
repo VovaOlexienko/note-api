@@ -13,5 +13,5 @@ public class UserDto {
 
     @JsonProperty(ID)
     @Schema(required = true, title = USER_ID_TITLE, example = USER_ID_EXAMPLE)
-    private Long id;
+    private String id;
 }

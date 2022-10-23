@@ -6,7 +6,6 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.UUID;
 
 import static com.github.notes.api.common.config.constant.ApiConstants.GUEST_USER_EMAIL;
 import static com.github.notes.api.common.config.constant.ApiConstants.NOTE_PACKAGE_ID;
@@ -21,7 +20,7 @@ public class CreateInvitationDto {
     @NotNull
     @JsonProperty(NOTE_PACKAGE_ID)
     @Schema(required = true, title = NOTE_PACKAGE_ID_TITLE, example = NOTE_PACKAGE_ID_EXAMPLE)
-    private UUID notePackageId;
+    private String notePackageId;
 
     @NotBlank
     @JsonProperty(GUEST_USER_EMAIL)

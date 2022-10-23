@@ -7,18 +7,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-import java.util.UUID;
-
 @FeignClient(name = "notes-service/notes-service")
 public interface NotesServiceManager {
 
     @GetMapping(path = "/package/{notePackageId}")
-    NotePackageDto getNotePackage(@PathVariable(name = "notePackageId") UUID notePackageId,
-                                  @RequestHeader("userId") Long userId);
+    NotePackageDto getNotePackage(@PathVariable(name = "notePackageId") String notePackageId,
+                                  @RequestHeader("userId") String userId);
 
 
     @PutMapping(path = "/package/{notePackageId}/user/{guestUserId}")
-    void addNotePackageForUser(@PathVariable(name = "notePackageId") UUID notePackageId,
-                               @PathVariable(name = "guestUserId") Long guestUserId,
-                               @RequestHeader("userId") Long userId);
+    void addNotePackageForUser(@PathVariable(name = "notePackageId") String notePackageId,
+                               @PathVariable(name = "guestUserId") String guestUserId,
+                               @RequestHeader("userId") String userId);
 }
