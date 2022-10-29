@@ -1,6 +1,7 @@
 package com.github.notes.api.notes.service.repository;
 
 import com.github.notes.api.notes.service.entity.NotePackage;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,5 +13,5 @@ public interface NotePackageRepository extends MongoRepository<NotePackage, Stri
 
     List<NotePackage> findByOwnersContains(String userId);
 
-    Optional<NotePackage> findByIdAndOwnersContains(String id, String ownerId);
+    Optional<NotePackage> findByIdAndOwnersContains(ObjectId id, List<String> ownerId);
 }

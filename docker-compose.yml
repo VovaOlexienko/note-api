@@ -1,111 +1,93 @@
 version: '3'
 services:
-  service-discovery-server-1:
-    image: olexienkovova/service-discovery-server:1.0
-    environment:
-      - JAVA_OPTS=
-        -Deureka.instance.hostname=service-discovery-server-12
-        -Deureka.client.service-url.defaultZone=http://service-discovery-server-1:8080/eureka,http://service-discovery-server-2:8080/eureka,http://service-discovery-server-3:8080/eureka
-    ports:
-      - "127.0.0.1:9001:8080"
+  consul-server:
+    image: hashicorp/consul:latest
+    restart: always
     networks:
       - app-net
-    mem_limit: 512m
-  service-discovery-server-2:
-    image: olexienkovova/service-discovery-server:1.0
-    environment:
-      - JAVA_OPTS=
-        -Deureka.instance.hostname=service-discovery-server-2
-        -Deureka.client.service-url.defaultZone=http://service-discovery-server-1:8080/eureka,http://service-discovery-server-2:8080/eureka,http://service-discovery-server-3:8080/eureka
     ports:
-      - "127.0.0.1:9002:8080"
-    networks:
-      - app-net
-    mem_limit: 512m
-  service-discovery-server-3:
-    image: olexienkovova/service-discovery-server:1.0
-    environment:
-      - JAVA_OPTS=
-        -Deureka.instance.hostname=service-discovery-server-3
-        -Deureka.client.service-url.defaultZone=http://service-discovery-server-1:8080/eureka,http://service-discovery-server-2:8080/eureka,http://service-discovery-server-3:8080/eureka
-    ports:
-      - "127.0.0.1:9003:8080"
-    networks:
-      - app-net
-    mem_limit: 512m
+      - "8500:8500"
+      - "8600:8600/tcp"
+      - "8600:8600/udp"
+    command: "agent -node=consul-server -server -ui -bootstrap -bootstrap-expect=1 -client 0.0.0.0 -bind '{{ GetInterfaceIP \"eth0\" }}'"
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+
   gateway-service:
     image: olexienkovova/gateway-service:1.0
+    restart: always
     environment:
       - JAVA_OPTS=
-        -Deureka.client.service-url.defaultZone=http://service-discovery-server-1:8080/eureka,http://service-discovery-server-2:8080/eureka,http://service-discovery-server-3:8080/eureka
+        -Dspring.cloud.consul.host=consul-server
         -Djwt.secret.key=secret
-    depends_on:
-      - service-discovery-server-1
-      - service-discovery-server-2
-      - service-discovery-server-3
+        -Dspring.cloud.consul.discovery.instanceZone=zone1
     ports:
-      - "9000:8080"
+      - "8080:8080"
     networks:
       - app-net
-    mem_limit: 512m
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    depends_on:
+      - consul-server
+
   user-service:
     image: olexienkovova/user-service:1.0
+    restart: always
     environment:
       - JAVA_OPTS=
+        -Dspring.cloud.consul.host=consul-server
         -Dspring.data.mongodb.uri=mongodb+srv://root:Zhtkgs5HIpPsaEuX@note.hvyhamq.mongodb.net/note?retryWrites=true&w=majority
-        -Deureka.client.service-url.defaultZone=http://service-discovery-server-1:8080/eureka,http://service-discovery-server-2:8080/eureka,http://service-discovery-server-3:8080/eureka
         -Dauthorization.cookie.validity=2505600
         -Djwt.secret.key=secret
         -Djwt.token.validity=2592000000
-    depends_on:
-      - service-discovery-server-1
-      - service-discovery-server-2
-      - service-discovery-server-3
-    deploy:
-      mode: replicated
-      replicas: 2
-    expose:
-      - "8080"
+        -Dspring.cloud.consul.discovery.instanceZone=zone1
     networks:
       - app-net
-    mem_limit: 512m
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    depends_on:
+      - consul-server
+
   notes-service:
     image: olexienkovova/notes-service:1.0
+    restart: always
     environment:
       - JAVA_OPTS=
+        -Dspring.cloud.consul.host=consul-server
         -Dspring.data.mongodb.uri=mongodb+srv://root:Zhtkgs5HIpPsaEuX@note.hvyhamq.mongodb.net/note?retryWrites=true&w=majority
-        -Deureka.client.service-url.defaultZone=http://service-discovery-server-1:8080/eureka,http://service-discovery-server-2:8080/eureka,http://service-discovery-server-3:8080/eureka
-    depends_on:
-      - service-discovery-server-1
-      - service-discovery-server-2
-      - service-discovery-server-3
-    deploy:
-      mode: replicated
-      replicas: 2
-    expose:
-      - "8080"
+        -Dspring.cloud.consul.discovery.instanceZone=zone1
     networks:
       - app-net
-    mem_limit: 512m
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    depends_on:
+      - consul-server
+
   invitation-service:
     image: olexienkovova/invitation-service:1.0
+    restart: always
     environment:
       - JAVA_OPTS=
+        -Dspring.cloud.consul.host=consul-server
         -Dspring.data.mongodb.uri=mongodb+srv://root:Zhtkgs5HIpPsaEuX@note.hvyhamq.mongodb.net/note?retryWrites=true&w=majority
-        -Deureka.client.service-url.defaultZone=http://service-discovery-server-1:8080/eureka,http://service-discovery-server-2:8080/eureka,http://service-discovery-server-3:8080/eureka
-    depends_on:
-      - service-discovery-server-1
-      - service-discovery-server-2
-      - service-discovery-server-3
-    deploy:
-      mode: replicated
-      replicas: 2
-    expose:
-      - "8080"
+        -Dspring.cloud.consul.discovery.instanceZone=zone1
     networks:
       - app-net
-    mem_limit: 512m
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    depends_on:
+      - consul-server
 
 networks:
   app-net:
-    driver: bridge
+    driver: overlay

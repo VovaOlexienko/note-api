@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
         User user = userServiceMapper.toEntity(dto);
         user.setSalt(generateSalt());
         user.setHash(passwordEncoder.encode(dto.getPassword() + user.getSalt()));
-        return authorizationUtil.generateJwtToken(userRepository.save(user).getId());
+        return authorizationUtil.generateJwtToken(userRepository.save(user).getId().toString());
     }
 
     @Override
@@ -41,14 +41,16 @@ public class UserServiceImpl implements UserService {
         if (!passwordEncoder.matches(dto.getPassword() + user.getSalt(), user.getHash())) {
             throw new ValidationException("Authentication failed");
         }
-        return authorizationUtil.generateJwtToken(user.getId());
+        return authorizationUtil.generateJwtToken(user.getId().toString());
     }
 
     @Override
     public UserDto getUser(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ValidationException(String.format("User with email = [%s] is not found", email)));
-        return userServiceMapper.toDto(user);
+        UserDto userDto = userServiceMapper.toDto(user);
+        userDto.setId(user.getId().toString());
+        return userDto;
     }
 
     public String generateSalt() {

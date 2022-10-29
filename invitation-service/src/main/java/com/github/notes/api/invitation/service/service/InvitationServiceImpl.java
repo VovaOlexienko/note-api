@@ -31,7 +31,11 @@ public class InvitationServiceImpl implements InvitationService {
     @Override
     public List<InvitationDto> getInvitations(String userId) {
         return invitationRepository.findByGuestUserId(userId).stream()
-                .map(invitationServiceMapper::toDto)
+                .map(entity -> {
+                    InvitationDto invitationDto = invitationServiceMapper.toDto(entity);
+                    invitationDto.setId(entity.getId().toString());
+                    return invitationDto;
+                })
                 .toList();
     }
 

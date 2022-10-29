@@ -21,7 +21,7 @@
         <common-config.version>1.0</common-config.version>
         <spring-cloud.version>2021.0.3</spring-cloud.version>
         <commons-collections4.version>4.4</commons-collections4.version>
-        <mapstruct.version>1.5.2.Final</mapstruct.version>
+        <mapstruct.version>1.5.3.Final</mapstruct.version>
         <mapstruct-processor.version>1.5.2.Final</mapstruct-processor.version>
         <springdoc-openapi-ui.version>1.6.11</springdoc-openapi-ui.version>
         <docker-maven-plugin.version>0.40.2</docker-maven-plugin.version>
@@ -52,7 +52,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <artifactId>spring-cloud-starter-consul-all</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

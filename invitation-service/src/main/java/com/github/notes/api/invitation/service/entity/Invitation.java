@@ -2,6 +2,7 @@ package com.github.notes.api.invitation.service.entity;
 
 import com.github.notes.api.common.config.constant.InvitationStatus;
 import lombok.Data;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -12,7 +13,7 @@ public class Invitation {
 
     @Id
     @Field(name = "id")
-    private String id;
+    private ObjectId id;
 
     @Field(name = "owner_user_id")
     private String ownerUserId;

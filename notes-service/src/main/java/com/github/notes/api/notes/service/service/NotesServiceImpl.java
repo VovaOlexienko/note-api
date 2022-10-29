@@ -8,6 +8,7 @@ import com.github.notes.api.notes.service.mapper.NoteServiceMapper;
 import com.github.notes.api.notes.service.repository.NotePackageRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ValidationException;
@@ -23,26 +24,36 @@ public class NotesServiceImpl implements NotesService {
     @Override
     public List<NotePackageDto> getNotePackages(String userId) {
         return notePackageRepository.findByOwnersContains(userId).stream()
-                .map(noteServiceMapper::toDto)
+                .map(notePackage -> {
+                    NotePackageDto notePackageDto = noteServiceMapper.toDto(notePackage);
+                    notePackageDto.setId(notePackage.getId().toString());
+                    return notePackageDto;
+                })
                 .toList();
     }
 
     @Override
     public NotePackageDto getNotePackage(String notePackageId, String userId) {
-        return noteServiceMapper.toDto(getNotePackageOrThrowException(notePackageId, userId));
+        NotePackage notePackage = getNotePackageOrThrowException(notePackageId, userId);
+        NotePackageDto notePackageDto = noteServiceMapper.toDto(notePackage);
+        notePackageDto.setId(notePackage.getId().toString());
+        return notePackageDto;
     }
 
     @Override
     public NotePackageDto createNotePackage(CreateNotePackageDto dto, String userId) {
         NotePackage notePackage = noteServiceMapper.toEntity(dto);
         notePackage.setOwners(List.of(userId));
-        return noteServiceMapper.toDto(notePackageRepository.save(notePackage));
+        NotePackageDto notePackageDto = noteServiceMapper.toDto(notePackageRepository.save(notePackage));
+        notePackageDto.setId(notePackage.getId().toString());
+        return notePackageDto;
     }
 
     @Override
     public void updateNotePackage(UpdateNotePackageDto dto, String userId) {
         NotePackage oldNotePackage = getNotePackageOrThrowException(dto.getId(), userId);
         NotePackage notePackage = noteServiceMapper.toEntity(dto);
+        notePackage.setId(new ObjectId(dto.getId()));
         notePackage.setOwners(oldNotePackage.getOwners());
         notePackageRepository.save(notePackage);
     }
@@ -71,7 +82,7 @@ public class NotesServiceImpl implements NotesService {
     }
 
     private NotePackage getNotePackageOrThrowException(String notePackageId, String userId) {
-        return notePackageRepository.findByIdAndOwnersContains(notePackageId, userId)
-                .orElseThrow(() -> new ValidationException(String.format("NotePackage with notePackageId = [%s] is not found", notePackageId)));
+        return notePackageRepository.findByIdAndOwnersContains(new ObjectId(notePackageId), List.of(userId))
+                .orElseThrow(() -> new ValidationException(String.format("NotePackage with id = [%s] is not found for user with id = [%s]", notePackageId, userId)));
     }
 }
