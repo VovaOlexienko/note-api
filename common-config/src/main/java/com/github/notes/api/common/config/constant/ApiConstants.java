@@ -5,6 +5,8 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ApiConstants {
 
+    public static final String NODE_ID = "nodeId";
+
     public static final String ERROR_MESSAGE = "message";
     public static final String ERROR_DETAIL = "detail";
     public static final String USERNAME = "username";

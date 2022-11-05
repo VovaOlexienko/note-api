@@ -27,12 +27,26 @@ services:
       - "8080:8080"
     networks:
       - app-net
+    depends_on:
+      - consul-server
     deploy:
+      update_config:
+        parallelism: 1
+        failure_action: rollback
+        delay: 10s
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
       resources:
         limits:
           memory: 512M
-    depends_on:
-      - consul-server
+    healthcheck:
+      test: curl -sS http://gateway-service:8080/actuator/health || echo 1
+      interval: 30s
+      timeout: 3s
+      retries: 12
 
   user-service:
     image: olexienkovova/user-service:1.0
@@ -47,16 +61,30 @@ services:
         -Dspring.cloud.consul.discovery.instanceZone=zone1
     networks:
       - app-net
+    depends_on:
+      - consul-server
     deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        failure_action: rollback
+        delay: 10s
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
       resources:
         limits:
           memory: 512M
-    depends_on:
-      - consul-server
+    healthcheck:
+      test: curl -sS http://user-service:8080/actuator/health || echo 1
+      interval: 30s
+      timeout: 3s
+      retries: 12
 
   notes-service:
     image: olexienkovova/notes-service:1.0
-    restart: always
     environment:
       - JAVA_OPTS=
         -Dspring.cloud.consul.host=consul-server
@@ -64,12 +92,27 @@ services:
         -Dspring.cloud.consul.discovery.instanceZone=zone1
     networks:
       - app-net
+    depends_on:
+      - consul-server
     deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        failure_action: rollback
+        delay: 10s
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
       resources:
         limits:
           memory: 512M
-    depends_on:
-      - consul-server
+    healthcheck:
+      test: curl -sS http://notes-service:8080/actuator/health || echo 1
+      interval: 30s
+      timeout: 3s
+      retries: 12
 
   invitation-service:
     image: olexienkovova/invitation-service:1.0
@@ -81,12 +124,27 @@ services:
         -Dspring.cloud.consul.discovery.instanceZone=zone1
     networks:
       - app-net
+    depends_on:
+      - consul-server
     deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        failure_action: rollback
+        delay: 10s
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
       resources:
         limits:
           memory: 512M
-    depends_on:
-      - consul-server
+    healthcheck:
+      test: curl -sS http://invitation-service:8080/actuator/health || echo 1
+      interval: 30s
+      timeout: 3s
+      retries: 12
 
 networks:
   app-net:
