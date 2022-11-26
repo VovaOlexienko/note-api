@@ -2,7 +2,6 @@ version: '3'
 services:
   consul-server:
     image: hashicorp/consul:latest
-    restart: always
     networks:
       - app-net
     ports:
@@ -11,13 +10,21 @@ services:
       - "8600:8600/udp"
     command: "agent -node=consul-server -server -ui -bootstrap -bootstrap-expect=1 -client 0.0.0.0 -bind '{{ GetInterfaceIP \"eth0\" }}'"
     deploy:
+      update_config:
+        parallelism: 1
+        failure_action: rollback
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
       resources:
         limits:
           memory: 512M
 
   gateway-service:
     image: olexienkovova/gateway-service:1.0
-    restart: always
     environment:
       - JAVA_OPTS=
         -Dspring.cloud.consul.host=consul-server
@@ -35,7 +42,7 @@ services:
         failure_action: rollback
         delay: 10s
       restart_policy:
-        condition: any
+        condition: on-failure
         delay: 5s
         max_attempts: 3
         window: 120s
@@ -50,7 +57,6 @@ services:
 
   user-service:
     image: olexienkovova/user-service:1.0
-    restart: always
     environment:
       - JAVA_OPTS=
         -Dspring.cloud.consul.host=consul-server
@@ -64,13 +70,13 @@ services:
     depends_on:
       - consul-server
     deploy:
-      replicas: 2
+      replicas: 1
       update_config:
         parallelism: 1
         failure_action: rollback
         delay: 10s
       restart_policy:
-        condition: any
+        condition: on-failure
         delay: 5s
         max_attempts: 3
         window: 120s
@@ -95,13 +101,13 @@ services:
     depends_on:
       - consul-server
     deploy:
-      replicas: 2
+      replicas: 1
       update_config:
         parallelism: 1
         failure_action: rollback
         delay: 10s
       restart_policy:
-        condition: any
+        condition: on-failure
         delay: 5s
         max_attempts: 3
         window: 120s
@@ -116,7 +122,6 @@ services:
 
   invitation-service:
     image: olexienkovova/invitation-service:1.0
-    restart: always
     environment:
       - JAVA_OPTS=
         -Dspring.cloud.consul.host=consul-server
@@ -127,13 +132,13 @@ services:
     depends_on:
       - consul-server
     deploy:
-      replicas: 2
+      replicas: 1
       update_config:
         parallelism: 1
         failure_action: rollback
         delay: 10s
       restart_policy:
-        condition: any
+        condition: on-failure
         delay: 5s
         max_attempts: 3
         window: 120s
@@ -148,4 +153,4 @@ services:
 
 networks:
   app-net:
-    driver: overlay
+    driver: bridge

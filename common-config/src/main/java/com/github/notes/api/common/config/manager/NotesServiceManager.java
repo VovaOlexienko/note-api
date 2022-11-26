@@ -11,12 +11,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 public interface NotesServiceManager {
 
     @GetMapping(path = "/package/{notePackageId}")
-    NotePackageDto getNotePackage(@PathVariable(name = "notePackageId") String notePackageId,
+    NotePackageDto getNotePackage(@PathVariable("notePackageId") String notePackageId,
                                   @RequestHeader("userId") String userId);
 
-
     @PutMapping(path = "/package/{notePackageId}/user/{guestUserId}")
-    void addNotePackageForUser(@PathVariable(name = "notePackageId") String notePackageId,
-                               @PathVariable(name = "guestUserId") String guestUserId,
+    void addNotePackageForUser(@PathVariable("notePackageId") String notePackageId,
+                               @PathVariable("guestUserId") String guestUserId,
                                @RequestHeader("userId") String userId);
 }

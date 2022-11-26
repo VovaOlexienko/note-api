@@ -4,11 +4,13 @@ import com.github.notes.api.common.config.constant.InvitationStatus;
 import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Data
 @Document("invitation")
+@CompoundIndex(def = "{'note_package_id': 1, 'guest_user_id': 1}", unique = true)
 public class Invitation {
 
     @Id

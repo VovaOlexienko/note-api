@@ -6,10 +6,7 @@ import lombok.experimental.UtilityClass;
 public class OpenApiConstants {
 
     public static final String ERROR_MESSAGE_TITLE = "Повідомлення про помилку";
-    public static final String ERROR_MESSAGE_EXAMPLE = "Вибачте, під час роботи сервісу сталася помилка";
-
-    public static final String ERROR_DETAILS_TITLE = "Детальна інформація про помилку";
-    public static final String ERROR_DETAILS_EXAMPLE = "detail";
+    public static final String ERROR_MESSAGE_EXAMPLE = "Authentication failed";
 
     public static final String USER_ID_TITLE = "Ідентифікатор користувача";
     public static final String USER_ID_EXAMPLE = "123";

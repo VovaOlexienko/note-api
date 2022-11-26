@@ -20,8 +20,8 @@ public class InvitationController {
     private final InvitationService invitationService;
 
     @GetMapping(path = "/invitation")
-    @Operation(description = "Створити запрошення")
-    public List<InvitationDto> createInvitation(@RequestHeader("userId") String userId) {
+    @Operation(description = "Отримати запрошення")
+    public List<InvitationDto> getInvitations(@RequestHeader("userId") String userId) {
         return invitationService.getInvitations(userId);
     }
 

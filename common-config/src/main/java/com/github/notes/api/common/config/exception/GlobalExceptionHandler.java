@@ -15,20 +15,17 @@ import javax.validation.ValidationException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    private static final String DEFAULT_ERROR_MESSAGE = "Вибачте, під час роботи сервісу сталася помилка";
-    private static final String BAD_REQUEST_EXCEPTION_MESSAGE = "Введені дані не коректні або сервіс використовується не правильно";
-
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorDto exception(RuntimeException ex) {
         log.error(ex.getMessage(), ex);
-        return new ErrorDto(DEFAULT_ERROR_MESSAGE, ex.getMessage());
+        return new ErrorDto(ex.getMessage());
     }
 
     @ExceptionHandler({HttpRequestMethodNotSupportedException.class, MethodArgumentNotValidException.class, ValidationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorDto validationException(Exception ex) {
         log.error(ex.getMessage(), ex);
-        return new ErrorDto(BAD_REQUEST_EXCEPTION_MESSAGE, ex.getMessage());
+        return new ErrorDto(ex.getMessage());
     }
 }

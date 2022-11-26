@@ -43,7 +43,7 @@ public class InvitationServiceImpl implements InvitationService {
     public void createInvitation(CreateInvitationDto dto, String userId) {
         UserDto user = userServiceManager.getUser(dto.getGuestUserEmail());
         if (user.getId().equals(userId)) {
-            throw new ValidationException("Can't create invitation for user with same id");
+            throw new ValidationException(String.format("Can't create invitation for user with same id = [%s]", userId));
         }
         NotePackageDto notePackage = notesServiceManager.getNotePackage(dto.getNotePackageId(), userId);
         Invitation invitation = invitationServiceMapper.toEntity(dto);
@@ -67,7 +67,7 @@ public class InvitationServiceImpl implements InvitationService {
 
     private Invitation getInvitationOrThrowException(String invitationId, String userId) {
         return invitationRepository.findByIdAndGuestUserId(invitationId, userId)
-                .orElseThrow(() -> new ValidationException(String.format("Invitation with id = [%s] is not found", invitationId)));
+                .orElseThrow(() -> new ValidationException(String.format("Invitation with id = [%s] is not found for user with id = [%s]", invitationId, userId)));
     }
 
     private void validateInvitationStatus(UpdateInvitationDto dto, Invitation invitation) {

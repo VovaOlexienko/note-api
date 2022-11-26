@@ -36,7 +36,6 @@ public class AuthorizationUtil {
         Cookie authorizationCookie = new Cookie("Authorization", jwtToken);
         authorizationCookie.setMaxAge(cookieValidity);
         authorizationCookie.setHttpOnly(true);
-        //TODO use cookie.setSecure(true) with ssl
         authorizationCookie.setPath("/");
         return authorizationCookie;
     }

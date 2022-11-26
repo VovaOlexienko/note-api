@@ -12,7 +12,7 @@ import static com.github.notes.api.common.config.constant.ApiConstants.NODE_ID;
 
 @WebFilter("/*")
 @RefreshScope
-public class AdditionalResponseInfoFilter implements Filter {
+public class AdditionalResponseInfoFiller implements Filter {
 
     @Value("${spring.cloud.consul.discovery.instance-id}")
     private String nodeId;

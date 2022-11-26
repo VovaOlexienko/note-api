@@ -1,17 +1,14 @@
 package com.github.notes.api.gateway.service.config;
 
-import com.github.notes.api.common.config.CommonConfig;
 import com.github.notes.api.gateway.service.filter.AccessDeniedFilter;
 import com.github.notes.api.gateway.service.filter.JwtAuthenticationFilter;
-import lombok.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import(CommonConfig.class)
 @RequiredArgsConstructor
 public class Config {
 
